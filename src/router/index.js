@@ -30,8 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-  {
+export const constantRoutes = [{
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -51,7 +50,10 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: {
+        title: 'Dashboard',
+        icon: 'dashboard'
+      }
     }]
   },
 
@@ -60,19 +62,27 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
+    meta: {
+      title: 'Example',
+      icon: 'example'
+    },
+    children: [{
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        meta: {
+          title: 'Table',
+          icon: 'table'
+        }
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: {
+          title: 'Tree',
+          icon: 'tree'
+        }
       }
     ]
   },
@@ -80,104 +90,138 @@ export const constantRoutes = [
   {
     path: '/form',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+    children: [{
+      path: 'index',
+      name: 'Form',
+      component: () => import('@/views/form/index'),
+      meta: {
+        title: 'Form',
+        icon: 'form'
       }
-    ]
+    }]
   },
   {
     path: '/user',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'User',
-        component: () => import('@/views/user/index'),
-        meta: { title: '用户列表', icon: 'nested' }
+    children: [{
+      path: 'index',
+      name: 'User',
+      component: () => import('@/views/user/index'),
+      meta: {
+        title: '用户列表',
+        icon: 'nested'
       }
-    ]
+    }]
   },
   {
     path: '/element',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Element',
-        component: () => import('@/views/element/index'),
-        meta: { title: '元素列表', icon: 'nested' }
+    children: [{
+      path: 'index',
+      name: 'Element',
+      component: () => import('@/views/element/index'),
+      meta: {
+        title: '元素列表',
+        icon: 'nested'
       }
-    ]
+    }]
   },
   {
     path: '/category',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Category',
-        component: () => import('@/views/category/index'),
-        meta: { title: '商品分类', icon: 'nested' }
+    children: [{
+      path: 'index',
+      name: 'Category',
+      component: () => import('@/views/category/index'),
+      meta: {
+        title: '商品分类',
+        icon: 'nested'
       }
-    ]
+    }]
   },
-	  {
-	  path: '/goods_type',
-	  component: Layout,
-	  children: [
-	    {
+  {
+    path: '/goods_type',
+    component: Layout,
+    children: [{
         path: 'index',
         name: 'GoodsType',
         component: () => import('@/views/goods_type/index'),
-        meta: { title: '商品类型', icon: 'nested' }
+        meta: {
+          title: '商品类型',
+          icon: 'nested'
+        }
       },
-		 {
-		  path: 'spec/:goods_type_id',
-		  name: 'Spec',
-		  component: () => import('@/views/spec/index'),
-		  meta: { title: '属性列表', icon: 'nested' },
-			hidden:true
-		},
-	  ]
-	},
+      {
+        path: 'spec',
+        name: 'Spec',
+        component: () => import('@/views/spec/index'),
+        meta: {
+          title: '属性列表',
+          icon: 'nested'
+        },
+        hidden: true
+      },
+    ]
+  },
   {
     path: '/goods',
+    name: "Goods",
+    meta:
+    {
+      title: '商品',
+      icon: 'nested'
+    },
     component: Layout,
-    children: [
-      {
+    children: [{
         path: 'index',
         name: 'Goods',
         component: () => import('@/views/goods/index'),
-        meta: { title: '商品', icon: 'nested' }
+        meta: {
+          title: '商品列表',
+          icon: 'nested'
+        }
       },
       {
         path: 'add',
         name: 'GoodsAdd',
         component: () => import('@/views/goods/add'),
-        meta: { title: '添加商品', icon: 'nested' }
+        meta: {
+          title: '添加商品',
+          icon: 'nested'
+        }
+      },
+      {
+        path: 'edit/:id',
+        name: 'GoodsEdit',
+        component: () => import('@/views/goods/edit'),
+        meta: {
+          title: '编辑商品',
+          icon: 'nested'
+        }
       },
     ]
   },
   {
     path: '/article',
     component: Layout,
-    children: [
-      {
+    children: [{
         path: 'index',
         name: 'Article',
         component: () => import('@/views/article/index'),
-        meta: { title: '文章列表', icon: 'nested' }
+        meta: {
+          title: '文章列表',
+          icon: 'nested'
+        }
       },
       {
         path: 'add',
         name: 'ArticleAdd',
         component: () => import('@/views/article/add'),
-        meta: { title: '新增文章', icon: 'el-icon-document-add' },
-        hidden:true
+        meta: {
+          title: '新增文章',
+          icon: 'el-icon-document-add'
+        },
+        hidden: true
       }
     ]
   },
@@ -192,36 +236,43 @@ export const constantRoutes = [
       title: 'Nested',
       icon: 'nested'
     },
-    children: [
-      {
+    children: [{
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
+        meta: {
+          title: 'Menu1'
+        },
+        children: [{
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1'),
             name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
+            meta: {
+              title: 'Menu1-1'
+            }
           },
           {
             path: 'menu1-2',
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
+            meta: {
+              title: 'Menu1-2'
+            },
+            children: [{
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
+                meta: {
+                  title: 'Menu1-2-1'
+                }
               },
               {
                 path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
                 name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
+                meta: {
+                  title: 'Menu1-2-2'
+                }
               }
             ]
           },
@@ -229,14 +280,18 @@ export const constantRoutes = [
             path: 'menu1-3',
             component: () => import('@/views/nested/menu1/menu1-3'),
             name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
+            meta: {
+              title: 'Menu1-3'
+            }
           }
         ]
       },
       {
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        meta: {
+          title: 'menu2'
+        }
       }
     ]
   },
@@ -244,21 +299,28 @@ export const constantRoutes = [
   {
     path: 'external-link',
     component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+    children: [{
+      path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+      meta: {
+        title: 'External Link',
+        icon: 'link'
       }
-    ]
+    }]
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })
 

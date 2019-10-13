@@ -20,7 +20,7 @@
 			</el-table-column>
 			<el-table-column label="封面图片" align="center">
 				<template slot-scope="scope">
-					<el-image :src="scope.row.cover" class="image">
+					<el-image :src="JSON.parse(scope.row.cover)[0]" class="image">
 						<div slot="placeholder" class="image-slot">
 							加载中<span class="dot">...</span>
 						</div>
@@ -71,7 +71,7 @@
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="100">
 				<template slot-scope="scope">
-					<el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+					<el-button @click="to_edit(scope.row.id)" type="text" size="small">编辑</el-button>
 					<el-button @click="deletes(scope.row.id)" type="text" size="small">删除</el-button>
 				</template>
 			</el-table-column>
@@ -107,7 +107,7 @@
 					<el-row v-for="item in specList" :key="item.id">
 						<el-button size="small" disabled>{{item.name}}:</el-button>
 						<el-button size="small" v-for="item2 in item.spec_item" :key="item2.id" @click="setSku(item.id,item2.id,item2.item)">{{item2.item}}</el-button>
-						
+
 					</el-row>
 					<el-row v-for="(item,index) in skuList" :key="item.index" :gutter="2">
 						<el-col :span="4" v-for="item2 in item.sku" :key="item2.id">
@@ -272,6 +272,9 @@
 					this.listLoading = false
 				})
 			},
+      to_edit(id){
+        this.$router.push({path:"/goods/edit/"+id})
+      },
 			create() {
 				this.$router.push({ path: '/goods/add' })
 			},
@@ -322,7 +325,7 @@
 				var list = this.specList
 				var ch_list = {}
 				// list.forEach((item,key)=>{
-				// 	
+				//
 				// })
 			},
 			delete_sku(index){
@@ -349,7 +352,7 @@
 				var sku=row.sku
 				this.skuList=[]
 				sku.forEach((item,index)=>{
-					
+
 					var sku_list=[]
 					var spec=JSON.parse(item.spec)
 					var item_index=0
@@ -359,11 +362,11 @@
 						 var item_split=item2.split(":")
 						 x.id=parseInt(item_split[1])
 						 x.name=text_split[item_index]
-						 
+
 						 x.spec_id=parseInt(item_split[0])
-						
+
 						 sku_list.push(x)
-					
+
 						 item_index++
 					})
 					var y={}

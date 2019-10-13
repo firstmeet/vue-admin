@@ -27,3 +27,9 @@ export function deletes(id) {
     method: 'delete',
   })
 }
+export function getInfo(id){
+  return request({
+    url: '/goods/'+id,
+    method: 'get',
+  })
+}

@@ -21,7 +21,7 @@
           {{ scope.row.name }}
         </template>
       </el-table-column>
-     
+
 
       <!--      <el-table-column class-name="status-col" label="Status" width="110" align="center">-->
       <!--        <template slot-scope="scope">-->
@@ -39,10 +39,10 @@
 			  label="设置"
 			  width="100">
 			  <template slot-scope="scope">
-					<router-link :to="'/goods_type/spec/'+scope.row.id">
+					<router-link :to="'/goods_type/spec?goods_type_id='+scope.row.id">
 						 <el-button type="text" size="small">属性列表</el-button>
 </router-link>
-			   
+
 			  </template>
 			</el-table-column>
       <el-table-column
@@ -61,7 +61,7 @@
         <el-form-item label="类型名称" prop="name" label-width="100px">
           <el-input v-model="temp.name"/>
         </el-form-item>
-       
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">

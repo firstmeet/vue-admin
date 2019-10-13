@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function getList(params) {
 	var pag=params.pag==0?params.pag:1
   return request({
-    url: '/spec?current_page='+params.current_page+"&page_size="+params.page_size+"&pag="+pag,
+    url: '/spec?goods_type_id='+params.goods_type_id+'&current_page='+params.current_page+"&page_size="+params.page_size+"&pag="+pag,
     method: 'get',
   })
 }

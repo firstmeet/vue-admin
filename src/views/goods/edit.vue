@@ -5,7 +5,7 @@
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item label="封面图片" prop="cover" label-width="100px">
-          <mult-upload :imageList="temp.cover" @callback="handleAvatarSuccess" :multip="mult_picture"></mult-upload>
+          <mult-upload :imageList="cover" @callback="handleAvatarSuccess" :multip="mult_picture"></mult-upload>
         </el-form-item>
         <el-form-item label="商品分类" prop="category_id" label-width="100px">
           <el-select v-model="temp.category_id" placeholder="请选择">
@@ -70,7 +70,7 @@
           <el-radio v-model="temp.status" label="0">下架</el-radio>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="createData">立即创建</el-button>
+          <el-button type="primary" @click="updateData">立即更新</el-button>
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
@@ -80,9 +80,7 @@
 <script>
   import {
     update,
-    create,
-    getList,
-    deletes
+    getInfo,
   } from '@/api/goods'
   import {
     getList as getCategoryList
@@ -93,13 +91,11 @@
   import {
     findByType as getSpecList
   } from '@/api/spec'
-  import Upload from '@/components/Upload'
   import Tinymce from '@/components/Tinymce'
   import MultUpload from '@/components/MultiUpload'
 
   export default {
     components: {
-      Upload,
       Tinymce,
       MultUpload
     },
@@ -130,8 +126,7 @@
         specList: [],
         like_arr: [],
         skuList: [],
-        upload_pic_list:[],
-        show_file:true,
+        cover:[],
         sku: [],
         list: null,
         listLoading: true,
@@ -160,10 +155,7 @@
           sort: "1",
           status: "1",
           created_at: "",
-          carsul:[]
         },
-        dialogFormVisible: false,
-        dialogStatus: '',
         textMap: {
           update: 'Edit'
         },
@@ -175,6 +167,52 @@
     },
     methods: {
       fetchData() {
+        let _this=this
+        getInfo(this.$route.params.id).then(res=>{
+          let row=res.data
+          _this.cover = JSON.parse(row.cover)
+          _this.temp.id = row.id
+          _this.temp.name = row.name
+          _this.temp.body = row.body
+          _this.temp.other_sku = row.other_sku.toString()
+          _this.temp.goods_type_id = row.goods_type_id
+          _this.temp.category_id = row.category_id
+          _this.temp.recommend = row.recommend.toString()
+          _this.temp.origin_price = row.origin_price.toString()
+          _this.temp.sale_price = row.sale_price.toString()
+          _this.temp.status = row.status.toString()
+          _this.temp.carsul=row.carsul
+          // this.temp.sort=row.sort.toString()
+          _this.temp.created_at = row.created_at
+          var sku=row.sku
+          _this.skuList=[]
+          sku.forEach((item,index)=>{
+
+            var sku_list=[]
+            var spec=JSON.parse(item.spec)
+            var item_index=0
+            var text_split=item.spec_text.split(",")
+            spec.forEach((item2,index)=>{
+              let x={}
+              var item_split=item2.split(":")
+              x.id=parseInt(item_split[1])
+              x.name=text_split[item_index]
+
+              x.spec_id=parseInt(item_split[0])
+
+              sku_list.push(x)
+
+              item_index++
+            })
+            var y={}
+            console.log(item.origin_price)
+            y.sku=sku_list
+            y.origin_price=item.origin_price.toString()
+            y.sale_price=item.sale_price.toString()
+            y.stock=item.stock.toString()
+            this.skuList.push(y)
+          })
+        })
         this.listLoading = true
         getCategoryList().then(res => {
           this.category = res.data
@@ -185,58 +223,19 @@
           this.listLoading = false
         })
       },
-      create() {
-        this.dialogFormVisible = true;
-        this.dialogStatus = "create"
-      },
-      createData() {
-        this.temp.sku=JSON.stringify(this.skuList)
-        this.temp.cover=JSON.stringify(this.temp.cover)
-        create(this.temp).then(res => {
-          this.$notify({
-            title: 'Success',
-            message: 'Create Successfully',
-            type: 'success',
-            duration: 2000
-          })
-          this.$router.back(-1)
-        })
-        this.dialogFormVisible = false;
-      },
       updateData() {
         this.temp.sku=JSON.stringify(this.skuList)
+        this.temp.cover=JSON.stringify(this.cover)
         update(this.temp).then(res => {
-          for (const v of this.list) {
-            if (v.id === this.temp.id) {
-              const index = this.list.indexOf(v)
-              this.list.splice(index, 1, res.data)
-              break
-            }
-          }
-          this.dialogFormVisible = false
+
+
           this.$notify({
             title: 'Success',
             message: 'Update Successfully',
             type: 'success',
-            duration: 2000
+            duration: 1000
           })
-        })
-      },
-      deletes(id) {
-        deletes(id).then(res => {
-          for (const v of this.list) {
-            if (v.id === id) {
-              const index = this.list.indexOf(v)
-              this.list.splice(index, 1)
-              break
-            }
-          }
-          this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
-            type: 'success',
-            duration: 2000
-          })
+          this.$router.back(-1)
         })
       },
       changeStock() {
@@ -256,7 +255,7 @@
         // this.temp.avatar = row.avatar
         this.temp.id = row.id
         this.temp.name = row.name
-        this.temp.cover = row.cover
+        this.cover = row.cover
         this.temp.body = row.body
         this.temp.other_sku = row.other_sku.toString()
         this.temp.goods_type_id = row.goods_type_id
@@ -304,7 +303,7 @@
       },
       handleAvatarSuccess(res, file) {
         this.uploadVisible = false
-        this.temp.cover.push(process.env.VUE_APP_BASE_API + "/" + res.data);
+        this.cover.push(process.env.VUE_APP_BASE_API + "/" + res.data);
       },
       select_page(current_page) {
         this.current_page = current_page
