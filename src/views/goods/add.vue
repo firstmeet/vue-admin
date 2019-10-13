@@ -5,7 +5,7 @@
           <el-input v-model="temp.name" />
         </el-form-item>
         <el-form-item label="封面图片" prop="cover" label-width="100px">
-          <mult-upload :imageList="temp.cover" @callback="handleAvatarSuccess" :multip="mult_picture"></mult-upload>
+          <mult-upload :imageList="cover" @callback="handleAvatarSuccess" :multip="mult_picture"></mult-upload>
         </el-form-item>
         <el-form-item label="商品分类" prop="category_id" label-width="100px">
           <el-select v-model="temp.category_id" placeholder="请选择">
@@ -126,6 +126,7 @@
         total_page: "",
         page_size: 10,
         category: [],
+        cover:[],
         goodsType: [],
         specList: [],
         like_arr: [],
@@ -191,7 +192,7 @@
       },
       createData() {
         this.temp.sku=JSON.stringify(this.skuList)
-        this.temp.cover=JSON.stringify(this.temp.cover)
+        this.temp.cover=JSON.stringify(this.cover)
         create(this.temp).then(res => {
           this.$notify({
             title: 'Success',
@@ -202,42 +203,6 @@
           this.$router.back(-1)
         })
         this.dialogFormVisible = false;
-      },
-      updateData() {
-        this.temp.sku=JSON.stringify(this.skuList)
-        update(this.temp).then(res => {
-          for (const v of this.list) {
-            if (v.id === this.temp.id) {
-              const index = this.list.indexOf(v)
-              this.list.splice(index, 1, res.data)
-              break
-            }
-          }
-          this.dialogFormVisible = false
-          this.$notify({
-            title: 'Success',
-            message: 'Update Successfully',
-            type: 'success',
-            duration: 2000
-          })
-        })
-      },
-      deletes(id) {
-        deletes(id).then(res => {
-          for (const v of this.list) {
-            if (v.id === id) {
-              const index = this.list.indexOf(v)
-              this.list.splice(index, 1)
-              break
-            }
-          }
-          this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
-            type: 'success',
-            duration: 2000
-          })
-        })
       },
       changeStock() {
         var list = this.specList
